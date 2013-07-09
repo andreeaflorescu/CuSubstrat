@@ -55,8 +55,6 @@ public class MainPanel {
 	}
 	
 	private void design() {
-		
-		////giiiiiiiiiiiiiiiiiiit
 
 		ImageIcon icon = new ImageIcon("logo.jpg");
 		Image img = icon.getImage();
