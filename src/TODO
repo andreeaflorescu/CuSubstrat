@@ -1,0 +1,4 @@
+- new private variable used to separate ordered trie from unordered trie
+- the addWord function is different in case we add a word from the unsorted list of elements
+- for the unsorted list of elements we must binary search for the right position of the new element
+before insertion
