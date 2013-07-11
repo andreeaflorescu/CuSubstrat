@@ -2,3 +2,10 @@
 Fisierele folosite pentru cuvinte:
   - cuvinte fara diacritice, cu forme flexionare: words.txt
   - cuvinte cu diacritice : TODO
+
+ ====================================================================================
+ Structura de date folosita pentru cautarea in lista cuvintelor: TRIE
+	* se folosesc 2 trie: unul pentru cuvintele din lista (verificarea prefixelor) si unul
+	pentru cuvintele inversate (verificarea sufixelor)
+	* cuvintele in dictionar apar sortate, deci eficienta este imbunatatita folosind binary
+	search pentru cautarea in lista vecinilor nodurilor	
