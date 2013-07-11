@@ -61,9 +61,6 @@ public class Trie {
 	}	
 	private Node root;
 	private boolean ordered;
-	public Trie() {
-		root = new Node();
-	}
 	
 	public Trie(boolean ordered) {
 		root = new Node();
