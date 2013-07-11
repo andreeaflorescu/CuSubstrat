@@ -60,8 +60,10 @@ public class Trie {
 		}
 	}	
 	private Node root;
-	public Trie() {
+	private boolean ordered;
+	public Trie(boolean ordered) {
 		root = new Node();
+		this.ordered = ordered;
 	}
 
 	public void addWord(String word) {
