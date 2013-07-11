@@ -71,8 +71,4 @@ public class MainPanel {
 		result_list.setText("avbasda\nflakjfdkskfdsa;cf\na,ljkfadskfjasd");
 		result_list.setBackground(new Color(170, 227, 214));
 	}
-	
-	public static void main(String args[]) {
-		new MainPanel();	
-	}
 }
