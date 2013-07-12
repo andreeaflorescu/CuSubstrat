@@ -30,6 +30,35 @@ public class Trie {
 			nr ++;
 			return child_list[getNrOfChild() - 1];
 		}
+		
+		public Node addChildOrd(char letter, boolean end) {
+			int index = binarySearchForIndex(letter, 0, getNrOfChild() - 1);
+			
+			for (int i = getNrOfChild(); i > index ; i--) {
+				child_list[i] = child_list[i - 1];
+			}
+			
+			Node new_node = new Node();
+			new_node.letter = letter;
+			new_node.wordEnd = end;
+			
+			child_list[index] = new_node;
+			nr++;
+			
+			return child_list[index];
+		}
+		
+		private int binarySearchForIndex(char letter, int start, int end) {
+			if (start == end - 1)
+				return end;
+			
+			int mid = start + (end - start) / 2;
+			if (child_list[mid].getValue() < letter) {
+				return binarySearchForIndex(letter, start, mid);
+			} else {
+				return binarySearchForIndex(letter, mid + 1, end);
+			}
+		}
 		public Node[] getChildList() {
 			return this.child_list;
 		}
@@ -81,8 +110,11 @@ public class Trie {
 			child = parent.searchValue(word.charAt(i));
 			if (child == null) {
 				//if it's the last letter of the word end will be set true
-				boolean end = (i == word.length() - 1)? true : false; 
-				parent = parent.addChild(word.charAt(i), end);
+				boolean end = (i == word.length() - 1)? true : false;
+				if (ordered == true)
+					parent = parent.addChild(word.charAt(i), end);
+				else
+					parent = parent.addChildOrd(word.charAt(i), end);
 			} else {
 				//moving to the next level in the trie
 				parent = child;
