@@ -1,4 +1,7 @@
 public class Trie {
+	
+//	===========================================================================
+//							START OF NODE CLASS
 	private class Node {
 		
 		private char letter;
@@ -114,7 +117,8 @@ public class Trie {
 			return null;
 		}
 	}
-	
+//								END OF NODE CLASS
+//	===========================================================================
 	private Node root;
 	private boolean ordered;
 	
