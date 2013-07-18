@@ -5,7 +5,7 @@ class Main {
 	private final String filename = "words.txt";
 	
 	Main() {
-		trie = new Trie();
+		trie = new Trie(false);
 	}
 	//read words from file and add them to the Trie
 	public void createTrie() {
@@ -19,6 +19,6 @@ class Main {
 	
 	public static void main(String args[]) {
 //		new MainPanel();
-
+		new Main();
 	}
 }
