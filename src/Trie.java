@@ -1,10 +1,12 @@
 public class Trie {
 	private class Node {
+		
 		private char letter;
 		//marks the end of one word
 		private boolean wordEnd;
 		private Node child_list[];
 		int nr;
+		
 		public Node() {
 			letter = ' ';
 			//any node can have maximum 26 descendes (26 letters in the dictionary)
@@ -12,15 +14,16 @@ public class Trie {
 			wordEnd = false;
 			nr = 0;
 		}
+		
 		public int getNrOfChild() {
 			return nr;
 		}
-		public void setValue(char letter) {
-			this.letter = letter;
-		}
+		
 		public char getValue() {
 			return this.letter;
 		}
+		
+		//add a child at the end of the child_list
 		public Node addChild(char letter, boolean end) {
 			int index = getNrOfChild();
 			Node new_node = new Node();
@@ -31,42 +34,58 @@ public class Trie {
 			return child_list[getNrOfChild() - 1];
 		}
 		
-		public Node addChildOrd(char letter, boolean end) {
-			int index = binarySearchForIndex(letter, 0, getNrOfChild() - 1);
-			
-			for (int i = getNrOfChild(); i > index ; i--) {
+		private Node addNode(char letter, boolean end) {
+			if (this.getNrOfChild() == 0) {
+				return addChild(letter, end);
+			}
+			int index;
+			if (this.getNrOfChild() == 1) {
+				//if the new letter is grater than the only child
+				//we have to add the new letter to the end of the child list
+				if (child_list[0].getValue() < letter) {
+					return addChild(letter, end);
+				} else {
+					//the index to be inserted is 0
+					index = 0;
+				}
+			}
+			//index to insert before
+			index = binarySearchForIndex(letter, 0, getNrOfChild() - 1);
+			//shift right with 1 the child_list to add the new node
+			for (int i = getNrOfChild(); i > index; i --) {
 				child_list[i] = child_list[i - 1];
 			}
-			
 			Node new_node = new Node();
 			new_node.letter = letter;
 			new_node.wordEnd = end;
-			
-			child_list[index] = new_node;
-			nr++;
-			
+			child_list[index] = new_node; 
+			nr ++;
 			return child_list[index];
 		}
 		
+		//binary search for the right position where the new letter has to be
+		//inserted
 		private int binarySearchForIndex(char letter, int start, int end) {
-			if (start == end - 1)
-				return end;
-			
+			if (start == end) {
+				return start;
+			}
 			int mid = start + (end - start) / 2;
-			if (child_list[mid].getValue() < letter) {
+			char mid_letter = child_list[mid].getValue();
+			if (mid_letter < letter && child_list[mid + 1].getValue() > letter) {
+				return mid;
+			} else 	if (mid_letter < letter) {
 				return binarySearchForIndex(letter, start, mid);
 			} else {
 				return binarySearchForIndex(letter, mid + 1, end);
 			}
 		}
+		
 		public Node[] getChildList() {
 			return this.child_list;
 		}
+		
 		//binary search for the node with the given value
 		private Node searchValue(char value) {
-			//get the list of children from the current root
-			Node list[] = new Node[26];
-			list = this.getChildList();
 			//set the left side, right side and middle for the binary search
 			int l = 0;
 			int r = getNrOfChild() - 1;
@@ -74,10 +93,17 @@ public class Trie {
 			//binary search for the 
 			if (r >= 0) {
 				while(l <= r) {
+					if (l == r) {
+						if (child_list[l].getValue() == value) {
+							return child_list[l];
+						} else {
+							return null;
+						}
+					}
 					int m = l + (r - l)/2;
-					if (list[m].getValue() == value) {
-						return list[m];
-					} else if (list[m].getValue() < value) {
+					if (child_list[m].getValue() == value) {
+						return child_list[m];
+					} else if (child_list[m].getValue() < value) {
 						r = m - 1;
 					} else {
 						l = m + 1;
@@ -87,7 +113,8 @@ public class Trie {
 			}
 			return null;
 		}
-	}	
+	}
+	
 	private Node root;
 	private boolean ordered;
 	
@@ -106,7 +133,6 @@ public class Trie {
 		Node parent = root;
 		Node child;
 		for (int i = 0; i < word.length(); i++) {
-			
 			child = parent.searchValue(word.charAt(i));
 			if (child == null) {
 				//if it's the last letter of the word end will be set true
@@ -114,7 +140,7 @@ public class Trie {
 				if (ordered == true)
 					parent = parent.addChild(word.charAt(i), end);
 				else
-					parent = parent.addChildOrd(word.charAt(i), end);
+					parent = parent.addNode(word.charAt(i), end);
 			} else {
 				//moving to the next level in the trie
 				parent = child;
@@ -125,13 +151,16 @@ public class Trie {
 	public Node getRoot() {
 		return root;
 	}
+	
 	public void showTrie(int level, Node root) {
-//		System.out.println("level: " + level);
 		Node[] list = new Node[26];
 		list = root.getChildList();
+		root = root.getChildList()[0];
+		list = list[0].getChildList();
 		for (int i = 0; i < root.getNrOfChild(); i++) {
+			
+//			showTrie(level + 1, list[i]);
 			System.out.println(list[i].getValue() + " " + level + " " + list[i].wordEnd);
-			showTrie(level + 1, list[i]);
 		}
 	}
 }
