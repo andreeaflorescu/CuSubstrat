@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Trie {
 	
 //	===========================================================================
@@ -156,6 +158,14 @@ public class Trie {
 		return root;
 	}
 	
+	public Node getLastNodeOfPrefix(String prefix) {
+		Node elem = root;
+		for (int i = 0; i < prefix.length(); i++) {
+			elem = elem.searchValue(prefix.charAt(i));
+		}
+		return elem;
+	}
+	
 	public void showTrie(int level, Node root) {
 		Node[] list = new Node[26];
 		list = root.getChildList();
@@ -166,5 +176,44 @@ public class Trie {
 //			showTrie(level + 1, list[i]);
 			System.out.println(list[i].getValue() + " " + level + " " + list[i].wordEnd);
 		}
+	}
+	
+	public void getWords(Node _root, String prefix, ArrayList<String> words) {
+		//if the current node represent the end of one root add the prefix to
+		//the word list
+		prefix += _root.letter;
+		if(_root.wordEnd == true) {
+			words.add(prefix);
+		}
+		//if the current node has no more children, it's the
+		//of the poor prefix
+		if(_root.nr == 0) {
+			return;
+		}
+		//recursively find all the other words with the new prefix
+		Node[] childList = _root.getChildList();
+		for (int i = 0; i < _root.nr; i++) {
+			getWords(childList[i], prefix, words);
+		}
+	}
+	
+	public void trial() {
+		ArrayList<String> words = new ArrayList<>();
+		String prefix = "an";
+		Node _root = getLastNodeOfPrefix("ana");
+		getWords(_root, prefix, words);
+		for (int i = 0; i < words.size(); i++) {
+			System.out.println(words.get(i));
+		}
+	}
+	
+	public ArrayList<String> getAllWords(String prefix) {
+		ArrayList<String> words = new ArrayList<>();
+		Node _root = getLastNodeOfPrefix(prefix);
+		//delete the last letter of the prefix because it will be added twice
+		//in each word
+		prefix = prefix.substring(0, prefix.length() - 1);
+		getWords(_root, prefix, words);
+		return words;
 	}
 }
