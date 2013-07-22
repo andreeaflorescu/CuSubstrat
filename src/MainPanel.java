@@ -1,17 +1,21 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.text.DefaultCaret;
 
 public class MainPanel {
 
@@ -23,22 +27,27 @@ public class MainPanel {
 	JButton searchButton;
 	JTextField input_text;
 	JComboBox<String> select_list;
-//	JList<String> result_list;
-	JTextPane result_list;
+	JTextArea result_list;
+	boolean ord;
 	
+	// add components to frame
+	// design components
+	// add action for components
 	public MainPanel() {
 		
 		frame = new JFrame();
 		panel = new JPanel(new BorderLayout());
 		searchButton = new JButton();
 		input_text = new JTextField(20);
-		String[] select_choice = {"inceput", "sfarsit", "oriunde"};
+		String[] select_choice = {"inceput", "sfarsit"};
 		select_list = new JComboBox<String>(select_choice);
-		result_list = new JTextPane();
-		JScrollPane scroll = new JScrollPane (result_list, 
-				   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//		jsp.setSize(300, 200);
-		south.add(input_text);
+		result_list = new JTextArea("", 10, 25);
+		result_list.setLineWrap(true);
+        JScrollPane scroll = new JScrollPane (result_list, 
+				   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				   JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        
+        south.add(input_text);
 		south.add(select_list);
 		south.add(searchButton);
 		
@@ -46,12 +55,13 @@ public class MainPanel {
 		panel.add(south, BorderLayout.NORTH);
 		
 		panel.add(center, BorderLayout.CENTER);
-		panel.setSize(400,400);
+		panel.setSize(400, 400);
 		frame.add(panel);
 		
 		design();
 		frame.setVisible(true);
 		
+		controller();	
 	}
 	
 	private void design() {
@@ -61,14 +71,44 @@ public class MainPanel {
 		frame.setIconImage(img);
 		frame.setForeground(Color.white);
 		frame.setTitle("Cu Substrat");
-		frame.setSize(600, 250);
+		frame.setSize(600, 400);
 		
 		input_text.setBackground(new Color(170, 227, 214));
 		
 		searchButton.setBackground(Color.orange);
 		searchButton.setText("Cauta Substrat");
 		
-		result_list.setText("avbasda\nflakjfdkskfdsa;cf\na,ljkfadskfjasd");
 		result_list.setBackground(new Color(170, 227, 214));
+		result_list.setSelectionColor(Color.orange);
+	}
+	
+	private void controller() {
+		searchButton.addActionListener(new ActionListener() {
+		
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Controller controller;
+				if(select_list.getSelectedItem().toString() == "inceput") {
+					ord = true;
+				} else {
+					ord = false;
+				}
+				System.out.println(ord);
+				controller = new Controller(ord);
+				try {
+					controller.createTrie();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				result_list.setText(controller.getWordList
+						(input_text.getText().toUpperCase()));
+			}
+		});
+	}
+	
+	public static void main(String[] ar) {
+		new MainPanel();
 	}
 }
