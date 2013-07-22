@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 class Main {
@@ -5,10 +8,7 @@ class Main {
 	private final String filename = "words.txt";
 	
 	Main() {
-		trie = new Trie(false);
-		trie.addWord("ana");
-		trie.addWord("ananas");
-		trie.addWord("analiza");
+		trie = new Trie(true);
 	}
 	
 	public String getWordList(String prefix) {
@@ -21,18 +21,20 @@ class Main {
 	}
 
 	//read words from file and add them to the Trie
-	public void createTrie() {
-		Scanner sc = new Scanner(filename);
+	public void createTrie() throws FileNotFoundException {
+		Scanner sc = new Scanner(new File(filename));
 		while(sc.hasNext()) {
 			String word = sc.next();
 			trie.addWord(word);
+//			System.out.println(word);
 		}
 		sc.close();
 	}
 	
-	public static void main(String args[]) {
+	public static void main(String args[]) throws FileNotFoundException {
 //		new MainPanel();
 		Main mainAlg = new Main();
-		System.out.println(mainAlg.getWordList("ana"));		
+		mainAlg.createTrie();
+		System.out.println(mainAlg.getWordList("COPAC"));
 	}
 }
