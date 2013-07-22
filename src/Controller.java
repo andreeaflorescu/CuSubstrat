@@ -9,6 +9,7 @@ class Controller {
 	private final String filename = "words.txt";
 	
 	Controller(boolean ord) {
+		this.ord = ord;
 		trie = new Trie(ord);
 	}
 	
