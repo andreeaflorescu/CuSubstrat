@@ -65,7 +65,9 @@ class Controller {
 	private void createTriePostOrd() throws FileNotFoundException {
 		Scanner sc = new Scanner(new File(filename));
 		while(sc.hasNext()) {
-			String word = sc.next();	
+			String word = sc.next();
+			System.out.println(new StringBuilder(word).reverse().toString() + "  " + word);
+			
 			trie.addWord(new StringBuilder(word).reverse().toString());
 		}
 		sc.close();
