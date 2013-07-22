@@ -54,9 +54,10 @@ public class Trie {
 					//the index to be inserted is 0
 					index = 0;
 				}
+			} else {
+				//index to insert before
+				index = binarySearchForIndex(letter, 0, getNrOfChild() - 1);
 			}
-			//index to insert before
-			index = binarySearchForIndex(letter, 0, getNrOfChild() - 1);
 			//shift right with 1 the child_list to add the new node
 			for (int i = getNrOfChild(); i > index; i --) {
 				child_list[i] = child_list[i - 1];
@@ -165,6 +166,9 @@ public class Trie {
 	public Node getLastNodeOfPrefix(String prefix) {
 		Node elem = root;
 		for (int i = 0; i < prefix.length(); i++) {
+			if(elem == null) {
+				return null;
+			}
 			elem = elem.searchValue(prefix.charAt(i));
 		}
 		return elem;
@@ -192,6 +196,10 @@ public class Trie {
 	public ArrayList<String> getAllWords(String prefix) {
 		ArrayList<String> words = new ArrayList<>();
 		Node _root = getLastNodeOfPrefix(prefix);
+		if(_root == null) {
+			words.add("Cuvantul nu a fost gasit in dictionar!!!");
+			return words;
+		}
 		//delete the last letter of the prefix because it will be added twice
 		//in each word
 		prefix = prefix.substring(0, prefix.length() - 1);
