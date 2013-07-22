@@ -15,7 +15,7 @@ public class Trie {
 		public Node() {
 			letter = ' ';
 			//any node can have maximum 26 descendes (26 letters in the dictionary)
-			child_list = new Node[26];
+			child_list = new Node[30];
 			wordEnd = false;
 			nr = 0;
 		}
@@ -94,6 +94,7 @@ public class Trie {
 			//set the left side, right side and middle for the binary search
 			int l = 0;
 			int r = getNrOfChild() - 1;
+//			System.out.println("value= " + value + " " + "r=" + r);
 			//if there is more then one element
 			//binary search for the 
 			if (r >= 0) {
@@ -109,9 +110,9 @@ public class Trie {
 					if (child_list[m].getValue() == value) {
 						return child_list[m];
 					} else if (child_list[m].getValue() < value) {
-						r = m - 1;
-					} else {
 						l = m + 1;
+					} else {
+						r = m - 1;
 					}
 					m = l + (r - l)/2;
 				}
