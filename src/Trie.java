@@ -2,8 +2,9 @@ import java.util.ArrayList;
 
 public class Trie {
 	
-//	===========================================================================
-//							START OF NODE CLASS
+//===========================================================================//
+//							START OF NODE CLASS								 //
+//============================================================================
 	private class Node {
 		
 		private char letter;
@@ -120,8 +121,10 @@ public class Trie {
 			return null;
 		}
 	}
-//								END OF NODE CLASS
-//	===========================================================================
+//===========================================================================//
+//								END OF NODE CLASS							 //
+//===========================================================================//
+
 	private Node root;
 	private boolean ordered;
 	
@@ -167,18 +170,6 @@ public class Trie {
 		return elem;
 	}
 	
-	public void showTrie(int level, Node root) {
-		Node[] list = new Node[26];
-		list = root.getChildList();
-		root = root.getChildList()[0];
-		list = list[0].getChildList();
-		for (int i = 0; i < root.getNrOfChild(); i++) {
-			
-//			showTrie(level + 1, list[i]);
-			System.out.println(list[i].getValue() + " " + level + " " + list[i].wordEnd);
-		}
-	}
-	
 	public void getWords(Node _root, String prefix, ArrayList<String> words) {
 		//if the current node represent the end of one root add the prefix to
 		//the word list
@@ -195,16 +186,6 @@ public class Trie {
 		Node[] childList = _root.getChildList();
 		for (int i = 0; i < _root.nr; i++) {
 			getWords(childList[i], prefix, words);
-		}
-	}
-	
-	public void trial() {
-		ArrayList<String> words = new ArrayList<>();
-		String prefix = "an";
-		Node _root = getLastNodeOfPrefix("ana");
-		getWords(_root, prefix, words);
-		for (int i = 0; i < words.size(); i++) {
-			System.out.println(words.get(i));
 		}
 	}
 	
