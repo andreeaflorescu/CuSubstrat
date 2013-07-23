@@ -16,7 +16,7 @@ public class Trie {
 		public Node() {
 			letter = ' ';
 			//any node can have maximum 26 descendes (26 letters in the dictionary)
-			child_list = new Node[30];
+			child_list = new Node[27];
 			wordEnd = false;
 			nr = 0;
 		}
@@ -29,7 +29,7 @@ public class Trie {
 			return this.letter;
 		}
 		
-		//add a child at the end of the child_list
+		// add a child at the end of the child_list
 		public Node addChild(char letter, boolean end) {
 			int index = getNrOfChild();
 			Node new_node = new Node();
@@ -40,20 +40,29 @@ public class Trie {
 			return child_list[getNrOfChild() - 1];
 		}
 		
+		private void addtToIndex(char letter, boolean end, int index) {
+			for (int i = getNrOfChild(); i > index; i --) {
+				child_list[i] = child_list[i - 1];
+			}
+			Node new_node = new Node();
+			new_node.letter = letter;
+			new_node.wordEnd = end;
+			child_list[index] = new_node; 
+			nr ++;
+		}
+		
+		// add a child using binary search for the right index
 		private Node addNode(char letter, boolean end) {
-			if (this.getNrOfChild() == 0) {
+			//insert at end of list
+			if (this.getNrOfChild() == 0 || 
+					child_list[getNrOfChild() - 1].getValue() < letter) {
 				return addChild(letter, end);
 			}
+			
 			int index;
-			if (this.getNrOfChild() == 1) {
-				//if the new letter is grater than the only child
-				//we have to add the new letter to the end of the child list
-				if (child_list[0].getValue() < letter) {
-					return addChild(letter, end);
-				} else {
-					//the index to be inserted is 0
-					index = 0;
-				}
+			//insert at beginning of list
+			if (child_list[0].getValue() > letter) {
+				index = 0;
 			} else {
 				//index to insert before
 				index = binarySearchForIndex(letter, 0, getNrOfChild() - 1);
@@ -70,20 +79,26 @@ public class Trie {
 			return child_list[index];
 		}
 		
-		//binary search for the right position where the new letter has to be
-		//inserted
+		// binary search for the right position where the new letter has to be
+		// inserted
+		// if the return value of method is -1 it mean that the value must be
+		// inserted at the end 
 		private int binarySearchForIndex(char letter, int start, int end) {
 			if (start == end) {
-				return start;
+				if (letter < child_list[start].getValue()) {
+					return start;
+				} else {
+					return start + 1;
+				}
 			}
 			int mid = start + (end - start) / 2;
 			char mid_letter = child_list[mid].getValue();
 			if (mid_letter < letter && child_list[mid + 1].getValue() > letter) {
-				return mid;
+				return mid + 1;
 			} else 	if (mid_letter < letter) {
-				return binarySearchForIndex(letter, start, mid);
-			} else {
 				return binarySearchForIndex(letter, mid + 1, end);
+			} else {
+				return binarySearchForIndex(letter, start, mid - 1);
 			}
 		}
 		
@@ -96,7 +111,6 @@ public class Trie {
 			//set the left side, right side and middle for the binary search
 			int l = 0;
 			int r = getNrOfChild() - 1;
-//			System.out.println("value= " + value + " " + "r=" + r);
 			//if there is more then one element
 			//binary search for the 
 			if (r >= 0) {
@@ -197,7 +211,13 @@ public class Trie {
 		ArrayList<String> words = new ArrayList<>();
 		Node _root = getLastNodeOfPrefix(prefix);
 		if(_root == null) {
-			words.add("Cuvantul nu a fost gasit in dictionar!!!");
+			String buffer = "Cuvantul nu a fost gasit in dictionar!!!";
+			if (ordered == true) {
+				words.add(buffer);
+			} else {
+				words.add(new StringBuilder(buffer).reverse().toString());
+			}
+			
 			return words;
 		}
 		//delete the last letter of the prefix because it will be added twice
