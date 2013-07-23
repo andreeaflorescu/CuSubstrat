@@ -40,17 +40,6 @@ public class Trie {
 			return child_list[getNrOfChild() - 1];
 		}
 		
-		private void addtToIndex(char letter, boolean end, int index) {
-			for (int i = getNrOfChild(); i > index; i --) {
-				child_list[i] = child_list[i - 1];
-			}
-			Node new_node = new Node();
-			new_node.letter = letter;
-			new_node.wordEnd = end;
-			child_list[index] = new_node; 
-			nr ++;
-		}
-		
 		// add a child using binary search for the right index
 		private Node addNode(char letter, boolean end) {
 			//insert at end of list
