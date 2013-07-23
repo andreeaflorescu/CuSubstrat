@@ -90,7 +90,6 @@ public class MainPanel {
 				} else {
 					ord = false;
 				}
-				System.out.println(ord);
 				controller = new Controller(ord);
 				try {
 					controller.createTrie();
@@ -99,8 +98,9 @@ public class MainPanel {
 					e.printStackTrace();
 				}
 				
+				String searchedText = input_text.getText().toUpperCase();
 				result_list.setText(controller.getWordList
-						(input_text.getText().toUpperCase()));
+						(new StringBuilder(searchedText).reverse().toString()));
 			}
 		});
 	}
