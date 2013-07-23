@@ -67,7 +67,7 @@ public class MainPanel {
 		Image img = icon.getImage();
 		frame.setIconImage(img);
 		frame.setForeground(Color.white);
-		frame.setTitle("Cu Substrat");
+		frame.setTitle("Cu Substrat v1.0");
 		frame.setSize(600, 400);
 		
 		input_text.setBackground(new Color(170, 227, 214));
