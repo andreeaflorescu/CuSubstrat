@@ -99,8 +99,14 @@ public class MainPanel {
 				}
 				
 				String searchedText = input_text.getText().toUpperCase();
-				result_list.setText(controller.getWordList
-						(new StringBuilder(searchedText).reverse().toString()));
+				if (ord) {
+					result_list.setText(controller.getWordList
+							(searchedText));
+				} else {
+					result_list.setText(controller.getWordList
+							(new StringBuilder(searchedText).reverse().toString()));
+				}
+				
 			}
 		});
 	}
